@@ -28,8 +28,8 @@
       </script>
     <% end %>
 
-    <title><%= t("bigbluebutton") %></title>
-    <meta property="og:title" content="<%= t("bigbluebutton", locale: :en) %>" />
+    <title><%= t("virtualroom") %></title>
+    <meta property="og:title" content="<%= t("virtualroom", locale: :en) %>" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="<%= t("landing.about", href: "Greenlight", locale: :en) %>" />
     <meta property="og:url" content="<%= request.base_url %>" />
@@ -56,6 +56,8 @@
       window.I18n = <%= current_translations.to_json.html_safe %>
       window.I18nFallback = <%= fallback_translations.to_json.html_safe %>
     </script>
+
+    <%= favicon_link_tag 'favicon.ico' %>
   </head>
 
   <body class="app-background" data-controller="<%= params[:controller] %>" data-action="<%= params[:action] %>" data-relative-root="<%= Rails.configuration.relative_url_root || "/" %>">
