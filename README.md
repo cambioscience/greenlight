@@ -21,6 +21,40 @@ For a overview of how Greenlight works, checkout our Introduction to Greenlight 
 
 [![GreenLight Overview](https://img.youtube.com/vi/Hso8yLzkqj8/0.jpg)](https://youtu.be/Hso8yLzkqj8)
 
+## Development environment
+
+1. Configure `.env` file
+
+Set mandatory fields:
+ * `SECRET_KEY_BASE`
+ * `BIGBLUEBUTTON_ENDPOINT`
+ * `BIGBLUEBUTTON_SECRET`
+
+See [`sample.env`](https://github.com/cambioscience/greenlight/blob/master/sample.env) file to see how to do it properly.
+
+2. Remove old images and build new one
+
+```sh
+ $ docker image prune
+ $ docker build --tag cambioscience/greenlight:release-v2 --file dev.Dockerfile .
+```
+
+3. Run containers
+
+In the root project directory run in command line:
+
+```sh
+  $ docker-compose --file docker-compose-dev.yml up -d
+```
+
+4. Enter running greenlight container
+
+```sh
+  $ docker exec -it greenlight-v2 /bin/bash
+```
+
+5. You can see your application running here: http://127.0.0.1:5000
+
 ## Installation on a BigBlueButton Server
 
 Greenlight is designed to work on a [BigBlueButton 2.0](https://github.com/bigbluebutton/bigbluebutton) (or later) server.
@@ -34,4 +68,3 @@ Greenlight is built using Ruby on Rails. Many developers already know Rails well
 We invite you to build upon Greenlight and help make it better. See [Contributing to BigBlueButton](http://docs.bigbluebutton.org/support/faq.html#contributing-to-bigbluebutton).
 
 We invite your feedback, questions, and suggests about Greenlight too. Please post them to the [developer mailing list](https://groups.google.com/forum/#!forum/bigbluebutton-dev).
-
