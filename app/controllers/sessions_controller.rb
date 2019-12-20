@@ -34,8 +34,12 @@ class SessionsController < ApplicationController
       provider_path = if Rails.configuration.omniauth_ldap
         ldap_signin_path
       else
+        Rails.logger.debug "---- Not one provider!"
+        providers = configured_providers
         "#{Rails.configuration.relative_url_root}/auth/#{providers.first}"
       end
+
+      Rails.logger.info "-----------Provider path: #{provider_path}"
 
       return redirect_to provider_path
     end
@@ -152,9 +156,15 @@ class SessionsController < ApplicationController
 
   def one_provider
     providers = configured_providers
-
-    (!allow_user_signup? || !allow_greenlight_accounts?) && providers.count == 1 &&
-      !Rails.configuration.loadbalanced_configuration
+    loadbalanced_configuration = Rails.configuration.loadbalanced_configuration
+    Rails.logger.info "----------------Providers: #{providers}"
+    result = (!allow_user_signup? || !allow_greenlight_accounts?) && providers.count == 1 && !loadbalanced_configuration
+    
+    Rails.logger.info "--------------- Can user sign up? #{allow_user_signup?}"
+    Rails.logger.info "--------------- Allow greenlight accounts? #{allow_greenlight_accounts?}"
+    Rails.logger.info "--------------- One provider? #{result}"
+    Rails.logger.info "--------------- loadbalanced_configuration: #{loadbalanced_configuration}"
+    return result
   end
 
   def check_user_exists

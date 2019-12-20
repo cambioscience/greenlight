@@ -2,6 +2,7 @@
 
 require 'office365'
 require 'omniauth_options'
+require 'omniauth-cognito-idp'
 
 include OmniauthOptions
 
@@ -17,6 +18,12 @@ Rails.application.config.omniauth_twitter = ENV['TWITTER_ID'].present? && ENV['T
 Rails.application.config.omniauth_google = ENV['GOOGLE_OAUTH2_ID'].present? && ENV['GOOGLE_OAUTH2_SECRET'].present?
 Rails.application.config.omniauth_office365 = ENV['OFFICE365_KEY'].present? &&
                                               ENV['OFFICE365_SECRET'].present?
+Rails.application.config.omniauth_cognito_idp = ENV['COGNITO_APP_CLIENT_ID'].present? &&
+                                                ENV['COGNITO_APP_CLIENT_SECRET'].present? &&
+                                                ENV['COGNITO_USER_POOL_SITE'].present? &&
+                                                ENV['COGNITO_USER_POOL_ID'].present? &&
+                                                ENV['AWS_REGION'].present?
+                                            
 
 SETUP_PROC = lambda do |env|
   OmniauthOptions.omniauth_options env
@@ -53,6 +60,19 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 
       provider :office365, ENV['OFFICE365_KEY'], ENV['OFFICE365_SECRET'],
       setup: SETUP_PROC
+    end
+    if Rails.configuration.omniauth_cognito_idp
+      Rails.application.config.providers << :cognito_idp
+      provider :cognito_idp,
+        ENV['COGNITO_APP_CLIENT_ID'],
+        ENV['COGNITO_APP_CLIENT_SECRET'],
+        client_options: {
+          site: ENV['COGNITO_USER_POOL_SITE']
+        },
+        scope: 'email openid aws.cognito.signin.user.admin profile',
+        user_pool_id: ENV['COGNITO_USER_POOL_ID'],
+        aws_region: ENV['AWS_REGION'],
+        setup: SETUP_PROC
     end
   end
 end

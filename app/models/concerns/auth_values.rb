@@ -21,9 +21,14 @@ module AuthValues
 
   # Provider attributes.
   def auth_name(auth)
+    Rails.logger.info "auth['provider'] => #{auth['provider']}"
     case auth['provider']
     when :office365
       auth['info']['display_name']
+    when 'cognito-idp'
+      Rails.logger.info "auth.keys => #{auth.keys}"
+      Rails.logger.info "auth['extra']['raw_info']['cognito:username'] => #{auth['extra']['raw_info']['cognito:username']}"
+      auth['extra']['raw_info']['cognito:username']
     else
       auth['info']['name']
     end

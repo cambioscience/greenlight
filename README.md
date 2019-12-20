@@ -32,11 +32,11 @@ Set mandatory fields:
 
 See [`sample.env`](https://github.com/cambioscience/greenlight/blob/master/sample.env) file to see how to do it properly.
 
-2. Remove old images and build new one
+2. Build new image and remove old ones 
 
 ```sh
- $ docker image prune
  $ docker build --tag cambioscience/greenlight:release-v2 --file dev.Dockerfile .
+ $ docker image prune
 ```
 
 3. Run containers
