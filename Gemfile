@@ -93,8 +93,8 @@ end
 gem 'rubocop'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
+  # Debug REPL
+  gem 'pry-rails'
   # Environment configuration.
   gem 'dotenv-rails'
   # Use a sqlite database in test and development.

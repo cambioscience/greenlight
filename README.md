@@ -55,6 +55,12 @@ In the root project directory run in command line:
 
 5. You can see your application running here: http://127.0.0.1:5000
 
+6. You can attach to a running container
+
+```sh
+  $ docker attach greenlight-v2
+```
+
 ## Installation on a BigBlueButton Server
 
 Greenlight is designed to work on a [BigBlueButton 2.0](https://github.com/bigbluebutton/bigbluebutton) (or later) server.
