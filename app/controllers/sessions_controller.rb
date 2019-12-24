@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU Lesser General Public License along
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
+require 'pry'
+
 class SessionsController < ApplicationController
   include Authenticator
   include Registrar
@@ -29,18 +31,13 @@ class SessionsController < ApplicationController
   # GET /signin
   def signin
     check_if_twitter_account
-
     if one_provider
       provider_path = if Rails.configuration.omniauth_ldap
         ldap_signin_path
       else
-        Rails.logger.debug "---- Not one provider!"
         providers = configured_providers
         "#{Rails.configuration.relative_url_root}/auth/#{providers.first}"
       end
-
-      Rails.logger.info "-----------Provider path: #{provider_path}"
-
       return redirect_to provider_path
     end
   end
@@ -90,7 +87,8 @@ class SessionsController < ApplicationController
   # GET /users/logout
   def destroy
     logout
-    redirect_to root_path
+    # It eventually redirects to root_path as was in original version
+    redirect_to cognito_logout_url
   end
 
   # GET/POST /auth/:provider/callback
@@ -229,5 +227,9 @@ class SessionsController < ApplicationController
         I18n.t("registration.deprecated.twitter_signin", link: signin_path(old_twitter_user_id: user.id))
       end
     end
+  end
+
+  def cognito_logout_url
+    "#{ENV['COGNITO_USER_POOL_SITE']}/logout?client_id=#{ENV['COGNITO_APP_CLIENT_ID']}&logout_uri=#{ENV['COGNITO_APP_LOGOUT_URI']}"
   end
 end

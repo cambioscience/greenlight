@@ -22,7 +22,8 @@ Rails.application.config.omniauth_cognito_idp = ENV['COGNITO_APP_CLIENT_ID'].pre
                                                 ENV['COGNITO_APP_CLIENT_SECRET'].present? &&
                                                 ENV['COGNITO_USER_POOL_SITE'].present? &&
                                                 ENV['COGNITO_USER_POOL_ID'].present? &&
-                                                ENV['AWS_REGION'].present?
+                                                ENV['AWS_REGION'].present? &&
+                                                ENV['COGNITO_APP_LOGOUT_URI']
                                             
 
 SETUP_PROC = lambda do |env|
