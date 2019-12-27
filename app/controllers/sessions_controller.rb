@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU Lesser General Public License along
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
-require 'pry'
 
 class SessionsController < ApplicationController
   include Authenticator
@@ -31,12 +30,13 @@ class SessionsController < ApplicationController
   # GET /signin
   def signin
     check_if_twitter_account
+    providers = configured_providers
     if one_provider
       provider_path = if Rails.configuration.omniauth_ldap
         ldap_signin_path
       else
-        providers = configured_providers
-        "#{Rails.configuration.relative_url_root}/auth/#{providers.first}"
+        provider_auth_name = provider_signin_path_name providers.first
+        "#{Rails.configuration.relative_url_root}/auth/#{provider_auth_name}"
       end
       return redirect_to provider_path
     end
@@ -232,4 +232,13 @@ class SessionsController < ApplicationController
   def cognito_logout_url
     "#{ENV['COGNITO_USER_POOL_SITE']}/logout?client_id=#{ENV['COGNITO_APP_CLIENT_ID']}&logout_uri=#{ENV['COGNITO_APP_LOGOUT_URI']}"
   end
+
+  def provider_signin_path_name(provider_sym)
+    if provider_sym == :cognito_idp
+      "cognito-idp"
+    else
+      provider_sym.to_s
+    end
+  end
+
 end
