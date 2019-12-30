@@ -64,10 +64,6 @@ module Authenticator
 
   # Logs current user out of GreenLight.
   def logout
-    # Rails.logger.info "---------- SESSION: #{session}"
-    # for key in session.keys do
-      # Rails.logger.info "---- session[#{key}] => #{session[key]}" 
-    # end
     session.delete(:user_id) if current_user
   end
 

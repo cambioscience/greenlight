@@ -54,9 +54,6 @@ class User < ApplicationRecord
 
     # Generates a user from omniauth.
     def from_omniauth(auth)
-      Rails.logger.info "------- Generating user from auth:"
-      Rails.logger.info auth
-
       # Provider is the customer name if in loadbalanced config mode
       provider = auth['provider'] == "bn_launcher" ? auth['info']['customer'] : auth['provider']
       find_or_initialize_by(social_uid: auth['uid'], provider: provider).tap do |u|
@@ -66,8 +63,6 @@ class User < ApplicationRecord
         u.image = auth_image(auth) unless u.image
         auth_roles(u, auth)
         u.email_verified = true
-        Rails.logger.info "u => #{u}"
-        Rails.logger.info "u.name => #{u.name}"
         u.save!
       end
     end

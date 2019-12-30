@@ -155,13 +155,7 @@ class SessionsController < ApplicationController
   def one_provider
     providers = configured_providers
     loadbalanced_configuration = Rails.configuration.loadbalanced_configuration
-    Rails.logger.info "----------------Providers: #{providers}"
     result = (!allow_user_signup? || !allow_greenlight_accounts?) && providers.count == 1 && !loadbalanced_configuration
-    
-    Rails.logger.info "--------------- Can user sign up? #{allow_user_signup?}"
-    Rails.logger.info "--------------- Allow greenlight accounts? #{allow_greenlight_accounts?}"
-    Rails.logger.info "--------------- One provider? #{result}"
-    Rails.logger.info "--------------- loadbalanced_configuration: #{loadbalanced_configuration}"
     return result
   end
 
