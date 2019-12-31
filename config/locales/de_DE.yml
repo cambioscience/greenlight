@@ -492,7 +492,4 @@ de_DE:
     signin: "Einloggen, um auf den eigenen Account zuzugreifen."
     title: Verifizierung Sie Ihre Email
     verification: Verifikation
-<<<<<<< HEAD
-  virtualroom: "Obrizum Virtual Room"
-=======
->>>>>>> b291b0e4099dbb9ddda7c1dc8a641392a7de0116
+  virtualroom: Obrizum Virtual Room
