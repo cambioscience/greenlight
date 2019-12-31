@@ -364,6 +364,7 @@ de_DE:
   recording:
     all_recordings: Alle Aufzeichnungen
     email: Aufzeichnungslink per Email
+    error: "Beim Abruf von %{count} Aufzeichnung(en) ist ein Fehler aufgetreten."
     no_recordings: "Dieser Raum hat keine %{inject}Aufzeichnungen."
     no_user_recordings: Momentan sind keine Aufzeichnungen verfügbar.
     no_matched_recordings: "Keine %{inject} Aufzeichnungen passen zu Ihrer Suche."
@@ -491,4 +492,7 @@ de_DE:
     signin: "Einloggen, um auf den eigenen Account zuzugreifen."
     title: Verifizierung Sie Ihre Email
     verification: Verifikation
+<<<<<<< HEAD
   virtualroom: "Obrizum Virtual Room"
+=======
+>>>>>>> b291b0e4099dbb9ddda7c1dc8a641392a7de0116
