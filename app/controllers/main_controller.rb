@@ -22,6 +22,6 @@ class MainController < ApplicationController
   def index
     # Store invite token
     session[:invite_token] = params[:invite_token] if params[:invite_token] && invite_registration
-    redirect_to "/signin"
+    redirect_to "#{Rails.configuration.relative_url_root}/signin"
   end
 end
