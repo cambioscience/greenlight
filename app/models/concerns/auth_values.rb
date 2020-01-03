@@ -25,7 +25,7 @@ module AuthValues
     when :office365
       auth['info']['display_name']
     when 'cognito-idp'
-      auth['extra']['raw_info']['cognito:username']
+      auth['info']['email']
     else
       auth['info']['name']
     end
