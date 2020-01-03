@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License along
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
+
 class SessionsController < ApplicationController
   include Authenticator
   include Registrar
@@ -29,14 +30,14 @@ class SessionsController < ApplicationController
   # GET /signin
   def signin
     check_if_twitter_account
-
+    providers = configured_providers
     if one_provider
       provider_path = if Rails.configuration.omniauth_ldap
         ldap_signin_path
       else
-        "#{Rails.configuration.relative_url_root}/auth/#{providers.first}"
+        provider_auth_name = provider_signin_path_name providers.first
+        "#{Rails.configuration.relative_url_root}/auth/#{provider_auth_name}"
       end
-
       return redirect_to provider_path
     end
   end
@@ -63,7 +64,12 @@ class SessionsController < ApplicationController
   def create
     logger.info "Support: #{session_params[:email]} is attempting to login."
 
-    user = User.include_deleted.find_by(email: session_params[:email], provider: @user_domain)
+    user = User.include_deleted.find_by(email: session_params[:email])
+
+    is_super_admin = user&.has_role? :super_admin
+
+    # Scope user to domain if the user is not a super admin
+    user = User.include_deleted.find_by(email: session_params[:email], provider: @user_domain) unless is_super_admin
 
     # Check user with that email exists
     return redirect_to(signin_path, alert: I18n.t("invalid_credentials")) unless user
@@ -73,7 +79,7 @@ class SessionsController < ApplicationController
     # Check that the user is not deleted
     return redirect_to root_path, flash: { alert: I18n.t("registration.banned.fail") } if user.deleted?
 
-    unless user.has_role? :super_admin
+    unless is_super_admin
       # Check that the user is a Greenlight account
       return redirect_to(root_path, alert: I18n.t("invalid_login_method")) unless user.greenlight_account?
       # Check that the user has verified their account
@@ -86,7 +92,8 @@ class SessionsController < ApplicationController
   # GET /users/logout
   def destroy
     logout
-    redirect_to root_path
+    # It eventually redirects to root_path as was in original version
+    redirect_to cognito_logout_url
   end
 
   # GET/POST /auth/:provider/callback
@@ -152,9 +159,9 @@ class SessionsController < ApplicationController
 
   def one_provider
     providers = configured_providers
-
-    (!allow_user_signup? || !allow_greenlight_accounts?) && providers.count == 1 &&
-      !Rails.configuration.loadbalanced_configuration
+    loadbalanced_configuration = Rails.configuration.loadbalanced_configuration
+    result = (!allow_user_signup? || !allow_greenlight_accounts?) && providers.count == 1 && !loadbalanced_configuration
+    return result
   end
 
   def check_user_exists
@@ -220,4 +227,17 @@ class SessionsController < ApplicationController
       end
     end
   end
+
+  def cognito_logout_url
+    "#{ENV['COGNITO_USER_POOL_SITE']}/logout?client_id=#{ENV['COGNITO_APP_CLIENT_ID']}&logout_uri=#{ENV['COGNITO_APP_LOGOUT_URI']}"
+  end
+
+  def provider_signin_path_name(provider_sym)
+    if provider_sym == :cognito_idp
+      "cognito-idp"
+    else
+      provider_sym.to_s
+    end
+  end
+
 end

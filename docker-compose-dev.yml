@@ -2,6 +2,8 @@ version: '3'
 
 services:
   app:
+    tty: true
+    stdin_open: true
     entrypoint: [bin/start]
     image: cambioscience/greenlight:release-v2
     container_name: greenlight-v2

@@ -24,6 +24,8 @@ module AuthValues
     case auth['provider']
     when :office365
       auth['info']['display_name']
+    when 'cognito-idp'
+      auth['extra']['raw_info']['cognito:username']
     else
       auth['info']['name']
     end

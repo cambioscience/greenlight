@@ -11,7 +11,7 @@ end
 gem 'rails', '~> 5.2.3'
 
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.12'
 
 # Use SCSS for stylesheets
 gem 'sassc-rails'
@@ -52,6 +52,7 @@ gem 'omniauth-bn-office365', git: 'https://github.com/blindsidenetworks/omniauth
 gem 'omniauth-bn-launcher', git: 'https://github.com/blindsidenetworks/omniauth-bn-launcher.git', tag: '0.1.3'
 gem 'bn-ldap-authentication', git: 'https://github.com/blindsidenetworks/bn-ldap-authentication.git'
 gem 'net-ldap'
+gem 'omniauth-cognito-idp'
 
 # BigBlueButton API wrapper.
 gem 'bigbluebutton-api-ruby'
@@ -92,8 +93,8 @@ end
 gem 'rubocop'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
+  # Debug REPL
+  gem 'pry-rails'
   # Environment configuration.
   gem 'dotenv-rails'
   # Use a sqlite database in test and development.
