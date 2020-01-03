@@ -385,7 +385,6 @@ DEPENDENCIES
   omniauth-twitter
   pagy
   pry-rails
-  pg (~> 0.18)
   puma (~> 3.12)
   rails (~> 5.2.3)
   rails-controller-testing
