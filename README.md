@@ -67,6 +67,18 @@ Greenlight is designed to work on a [BigBlueButton 2.0](https://github.com/bigbl
 
 For information on installing Greenlight, checkout our [Installing Greenlight on a BigBlueButton Server](http://docs.bigbluebutton.org/greenlight/gl-install.html#installing-on-a-bigbluebutton-server) documentation.
 
+## Deployment
+
+1. Stop Greenlight docker containers.
+2. Restart Big Blue Button.
+3. Run script for image build and deployment.
+
+```sh
+  $ sudo docker-compose down
+  $ sudo bbb-conf --restart
+  $ sudo ./scripts/build-and-deploy.sh
+```
+
 ## Source Code & Contributing
 
 Greenlight is built using Ruby on Rails. Many developers already know Rails well, and we wanted to create both a full front-end to BigBlueButton but also a reference implementation of how to fully leverage the [BigBlueButton API](http://docs.bigbluebutton.org/dev/api.html).
